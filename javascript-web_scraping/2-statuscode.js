@@ -1,10 +1,13 @@
 #!/usr/bin/node
+/* Script that prints the title */
 
-const filePath = require('fs');
-const url = process.arg[2];
-request(url, (error, response, body) => {
+const request = require('request');
+
+const getURL = process.argv[2];
+
+request(getURL, (error, response) => { // configure the request
   if (error) {
-    console.error(error);
+    console.error('Error');
   } else {
     console.log(`code: ${response.statusCode}`);
   }
