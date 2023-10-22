@@ -1,5 +1,16 @@
 #!/usr/bin/node
 const fs = require('fs');
-fs.writeFile(process.argv[2], process.argv[3], error => {
-  if (error) console.log(error);
+
+const filePath = process.argv[2];
+
+const txt = process.argv[3];
+
+const escribir = fs.createWriteStream(filePath, 'utf-8');
+
+// Imprimir algun error generado
+escribir.on('error', (error) => {
+  console.error(error);
 });
+
+// Escribir el texto en el archivo
+escribir.write(txt);
