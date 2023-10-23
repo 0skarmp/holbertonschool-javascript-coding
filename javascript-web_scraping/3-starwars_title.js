@@ -1,35 +1,20 @@
 #!/usr/bin/node
-
-// Import the 'request' module to make HTTP requests
 const request = require('request');
 
-// Check if the correct number of arguments (3) is provided in the command line
-if (process.argv.length !== 3) {
-  console.error('Usage: node 3-starwars_title.js <movie_id>');
-  process.exit(1);
-}
-
-// Get the movie ID from the command line arguments
+// Get the movie ID from the command line argument
 const movieId = process.argv[2];
-// Create the URL for the Star Wars API request
-const url = `https://swapi-api.hbtn.io/api/films/${movieId}`;
 
-request.get(url, (error, response, body) => {
-  // Check if an error occurred during the request
+// Define the Star Wars API endpoint
+const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
+
+// Make an HTTP request to the API
+request(apiUrl, (error, response, body) => {
   if (error) {
-    console.error(error);
-    process.exit(1);
-  }
-
-  // Check if the response status code is 200 (OK)
-  if (response.statusCode === 200) {
-    // Parse the JSON response
-    const movieData = JSON.parse(body);
-    // Print the title of the movie
-    console.log(movieData.title);
+    console.error('Error:', error);
+  } else if (response.statusCode === 200) {
+    const movie = JSON.parse(body);
+    console.log(movie.title);
   } else {
-    // Print an error message for unsuccessful requests.
-    console.error(`Error: Failed to retrieve movie data. Status code: ${response.statusCode}`);
-    process.exit(1);
+    console.error('Request failed with status code:', response.statusCode);
   }
 });
