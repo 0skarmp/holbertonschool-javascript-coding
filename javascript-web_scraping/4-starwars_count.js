@@ -1,20 +1,17 @@
 #!/usr/bin/node
-/* script that print the number of movies */
-
 const request = require('request');
+const url = process.argv[2];
 
-const apiUrl = process.argv[2];
-const characterId = 18;
-
-request(apiUrl, (error, response, body) => { // configure the request
-  if (!error && response.statusCode === 200) { // check status code
-    const data = JSON.parse(body); // parse the response body as JSON
-    const movieName = data.results.filter((film) => // filter the movie
-      film.characters.includes(`https://swapi-api.hbtn.io/api/people/${characterId}/`)
-    );
-
-    console.log(movieName.length);
-  } else {
-    console.error('Error:', error);
+request(url, (error, response, body) => {
+  if (!error) {
+    let length = 0;
+    for (const movie of JSON.parse(body).results) {
+      for (const char of movie.characters) {
+        if (char.includes(18)) {
+          length++;
+        }
+      }
+    }
+    console.log(length);
   }
 });
